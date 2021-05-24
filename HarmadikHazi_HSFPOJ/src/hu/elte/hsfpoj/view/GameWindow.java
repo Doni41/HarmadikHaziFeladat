@@ -315,7 +315,7 @@ public class GameWindow extends JFrame {
                 + " , Teljesitett szint: " + level);
 
         try {
-            resultManager.insertScore(name, level);
+            resultManager.putHighScore(name, level);
         } catch (SQLException e) {
             e.printStackTrace();
         }
