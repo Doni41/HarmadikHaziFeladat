@@ -18,7 +18,8 @@ public class ResultManager {
     public ResultManager(int maxScores) throws SQLException {
         this.maxScores = maxScores;
 
-        String dbURL = "jdbc:mysql://localhost:3306/progtechhazi?createDatabaseIfNotExist=true&serverTimezone=UTC";
+        //String dbURL = "jdbc:mysql://localhost:3306/ProgtechHazi?createDatabaseIfNotExist=true&serverTimezone=UTC";
+        String dbURL = "jdbc:mysql://localhost:3306/ProgtechHazi";
         connection = DriverManager.getConnection(dbURL, "root", "adminroot");
 
         String insertQuery = "INSERT INTO HIGHSCORES (TIMESTAMP, NAME, SCORE) VALUES (?, ?, ?)";

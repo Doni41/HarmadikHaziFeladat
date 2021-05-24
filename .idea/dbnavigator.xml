@@ -28,7 +28,11 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="2c9bb5c3-42d1-47e6-9374-2649c0770d32">
-      <console name="ProgtechHaziDB" type="STANDARD" schema="" session="Main" />
+      <console name="ProgtechHaziDB" type="STANDARD" schema="ProgtechHazi" session="Main"><![CDATA[CREATE DATABASE progtechhazi;
+CREATE TABLE 'person' (
+    'id' int(11) PRIMARY KEY NOT NULL AUTO_ICREMENT,
+    'name' varchar(100) NOT NULL
+);]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -59,7 +63,9 @@
     <filters />
   </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces />
+    <recently-used-interfaces>
+      <mapping database-type="MYSQL" interface-id="DEFAULT" />
+    </recently-used-interfaces>
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>

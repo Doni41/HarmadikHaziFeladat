@@ -3,6 +3,7 @@ package hu.elte.hsfpoj.view;
 import hu.elte.hsfpoj.model.Direction;
 import hu.elte.hsfpoj.model.Game;
 import hu.elte.hsfpoj.model.GameIdentifier;
+import hu.elte.hsfpoj.model.ResultManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 
 public class GameWindow extends JFrame {
 
@@ -30,6 +32,11 @@ public class GameWindow extends JFrame {
     private Timer timer;
 
     public GameWindow() throws IOException {
+        try {
+            ResultManager resultManager = new ResultManager(10);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
         game = new Game();
         URL url = GameWindow.class.getResource("/hu/elte/hsfpoj/res/wall.png");
         setIconImage(Toolkit.getDefaultToolkit().getImage(url));
