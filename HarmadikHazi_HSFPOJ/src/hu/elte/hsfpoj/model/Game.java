@@ -3,6 +3,7 @@ package hu.elte.hsfpoj.model;
 import hu.elte.hsfpoj.res.ResLoader;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
@@ -10,6 +11,11 @@ public class Game {
     private Level level;
 
     public Game() {
+        try {
+            ResultManager resultManager = new ResultManager(10);
+        } catch (SQLException sqle) {
+            System.out.println("Hiba az adatbazis letrehozasa kozben!");
+        }
         levels = new HashMap<>();
         level = null;
         readLevels();
