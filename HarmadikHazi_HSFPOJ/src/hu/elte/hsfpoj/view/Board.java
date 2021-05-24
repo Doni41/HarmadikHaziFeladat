@@ -82,7 +82,7 @@ public class Board extends JPanel {
                 }
             }
         };
-        timer = new Timer(1000, ghostActionListener);
+        timer = new Timer(500, ghostActionListener);
         timer.start();
     }
 

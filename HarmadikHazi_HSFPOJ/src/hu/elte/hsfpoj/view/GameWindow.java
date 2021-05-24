@@ -256,6 +256,7 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null);
         game.loadNewGame(new GameIdentifier("EASY", 1));
         board.refresh();
+        pack();
 
         timeLabel.setText("0 ms");
         startTime = System.currentTimeMillis();
@@ -272,5 +273,6 @@ public class GameWindow extends JFrame {
         timer = new Timer(10, timerAction);
         timer.start();
         board.moveGhostEvent();
+
     }
 }
