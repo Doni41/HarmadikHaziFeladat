@@ -79,6 +79,7 @@ public class Board extends JPanel {
                     refresh();
                 } else {
                     ((Timer)actionEvent.getSource()).stop();
+                    game.getLevel().endOfTheGame();
                 }
             }
         };

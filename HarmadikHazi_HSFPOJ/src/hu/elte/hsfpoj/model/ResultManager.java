@@ -18,19 +18,18 @@ public class ResultManager {
     public ResultManager(int maxScores) throws SQLException {
         this.maxScores = maxScores;
 
-        //String dbURL = "jdbc:mysql://localhost:3306/ProgtechHazi?createDatabaseIfNotExist=true&serverTimezone=UTC";
         String dbURL = "jdbc:mysql://localhost:3306/progtechhazi?serverTimezone=UTC";
         connection = DriverManager.getConnection(dbURL, "root", "adminroot");
 
-        String insertQuery = "INSERT INTO HIGHSCORES (TIMESTAMP, NAME, SCORE) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO RESULTS (NAME, SCORE) VALUES (?, ?)";
         insertStatement = connection.prepareStatement(insertQuery);
 
-        String deleteQuery = "DELETE FROM HIGHSCORES WHERE SCORE=?";
+        String deleteQuery = "DELETE FROM RESULTS WHERE SCORE=?";
         deleteStatement = connection.prepareStatement(deleteQuery);
     }
 
     public List<Result> getSortedHighScores() throws SQLException {
-        String query = "SELECT * FROM HIGHSCORES";
+        String query = "SELECT * FROM RESULTS";
         List<Result> highScores = new ArrayList<>();
 
         Statement stmt = connection.createStatement();
@@ -60,21 +59,19 @@ public class ResultManager {
         }
     }
 
-    private void sortHighScores(List<Result> highScores) {
+    public void sortHighScores(List<Result> highScores) {
         Collections.sort(highScores, Comparator.comparing(Result::getHighScore).reversed());
     }
 
-    private void insertScore(String name, int score) throws SQLException {
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
+    public void insertScore(String name, int score) throws SQLException {
 
-        insertStatement.setTimestamp(1, ts);
-        insertStatement.setString(2, name);
-        insertStatement.setInt(3, score);
+        insertStatement.setString(1, name);
+        insertStatement.setInt(2, score);
 
         insertStatement.executeUpdate();
     }
 
-    private void deleteScores(int score) throws SQLException {
+    public void deleteScores(int score) throws SQLException {
         deleteStatement.setInt(1, score);
         deleteStatement.executeUpdate();
     }

@@ -132,6 +132,7 @@ public class Level {
                 || ghostCurrent.equals(playerRight)
                 || ghostCurrent.equals(playerDown)
                 || ghostCurrent.equals(playerUp)) {
+            gameOver = true;
             return true;
 
         }
@@ -218,10 +219,6 @@ public class Level {
     }
 
     public boolean isGameOver() {
-        if (endOfTheGame()) {
-            return true;
-        }
-
-        return false;
+        return gameOver;
     }
 }

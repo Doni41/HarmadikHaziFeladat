@@ -27,9 +27,11 @@ public class GameWindow extends JFrame {
     private JSeparator separator;
     private JLabel timeLabel;
 
-    private final Game game;
+    private Game game;
     private long startTime;
     private Timer timer;
+
+    private ResultManager resultManager;
 
     public GameWindow() throws IOException {
         try {
@@ -38,13 +40,10 @@ public class GameWindow extends JFrame {
             System.out.println("" + e);
         }
         try {
-            ResultManager resultManager = new ResultManager(10);
+            resultManager = new ResultManager(10);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        game = new Game();
-        URL url = GameWindow.class.getResource("/hu/elte/hsfpoj/res/wall.png");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(url));
         initGame();
 
     }
@@ -54,6 +53,9 @@ public class GameWindow extends JFrame {
     }
 
     private void initGame() {
+        game = new Game();
+        URL url = GameWindow.class.getResource("/hu/elte/hsfpoj/res/wall.png");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(url));
         setTitle("Labyrinth");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,20 +112,20 @@ public class GameWindow extends JFrame {
                 }
 
                 board.repaint();
-                if (d != null && game.step(d)) {
+                if (d != null && game.step(d) && !game.getLevel().isGameOver()) {
                     if (game.getLevel().isGameOver()) {
-                        // ide kell majd a beirni a nevet az adatbazishoz
                         board.gameOver();
+                        afterGameEnded();
                     }
                     if (game.getLevel().isFulfilled()) {
                         gameWinning();
+                        if (game.getLevel().getGameID().getLevel() == 10) {
+                            afterGameEnded();
+                        }
                     }
 
                     if (!game.getLevel().endOfTheGame() && game.getLevel().isFulfilled()) {
-                        JOptionPane.showMessageDialog(GameWindow.this,
-                                "Gratulalok, kijutottal a labirintusbol!",
-                                "Nyertel!",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        afterGameEnded();
                     }
                 }
 
@@ -285,6 +287,37 @@ public class GameWindow extends JFrame {
         timer = new Timer(10, timerAction);
         timer.start();
         board.moveGhostEvent();
+
+        Timer playerGhostTimer = new Timer(30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (game.getLevel().endOfTheGame()) {
+                    afterGameEnded();
+                    ((Timer)actionEvent.getSource()).stop();
+                    board.getTimer().stop();
+                }
+            }
+        });
+        playerGhostTimer.start();
+
+    }
+
+    public void afterGameEnded () {
+        String name = JOptionPane.showInputDialog(GameWindow.this,
+                "Add meg a nevedet: ",
+                "Vege a jateknak" ,
+                JOptionPane.INFORMATION_MESSAGE);
+        int level = game.getLevel().getGameID().getLevel();
+        System.out.println("Name: " + name
+                + " , Teljesitett szint: " + level);
+
+        try {
+            resultManager.insertScore(name, level);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 }
