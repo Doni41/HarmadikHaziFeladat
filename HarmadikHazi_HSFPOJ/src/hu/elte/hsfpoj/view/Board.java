@@ -25,6 +25,7 @@ public class Board extends JPanel {
     private double scale;
     private int scaledSize;
     private final int titleSize = 32;
+    private Timer timer;
 
 
     public Board(Game g) throws IOException {
@@ -61,15 +62,30 @@ public class Board extends JPanel {
 
     public void moveGhostEvent () {
         Direction dir = game.createDirection();
-        Timer timer = new Timer(1000, new ActionListener() {
+        ActionListener ghostActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                game.getLevel().ghostChangeDirection(dir);
-                System.out.println("Ghost x: " + game.getLevel().getGhostPosition().x + " , y: " + game.getLevel().getGhostPosition().y);
-                refresh();
+                if (!game.getLevel().isGameOver()) {
+                    Direction newDir = null;
+                    if (game.getLevel().getGhostPosition() != null) {
+                        newDir = game.getLevel().getGhostDirection();
+                        game.getLevel().ghostChangeDirection(newDir);
+                    } else {
+                        game.getLevel().ghostChangeDirection(dir);
+                    }
+                    System.out.println("Ghost x: " + game.getLevel().getGhostPosition().x + " , y: " + game.getLevel().getGhostPosition().y);
+                    refresh();
+                } else {
+                    ((Timer)actionEvent.getSource()).stop();
+                }
             }
-        });
+        };
+        timer = new Timer(1000, ghostActionListener);
         timer.start();
+    }
+
+    public void stopTimer (ActionEvent actionEvent, Timer timer, ActionListener ghostActionListener) {
+
     }
 
     @Override

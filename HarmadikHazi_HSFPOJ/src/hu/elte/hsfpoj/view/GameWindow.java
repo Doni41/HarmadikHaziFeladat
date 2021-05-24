@@ -67,8 +67,9 @@ public class GameWindow extends JFrame {
         });
         results = new JMenu();
 
-        GroupLayout boardLayout = new javax.swing.GroupLayout(board);
-        setLayout(boardLayout);
+        GroupLayout boardLayout = new GroupLayout(board);
+        //getContentPane().setLayout(boardLayout);
+        board.setLayout(boardLayout);
         boardLayout.setHorizontalGroup(
                 boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 398, Short.MAX_VALUE)
@@ -136,12 +137,20 @@ public class GameWindow extends JFrame {
                                                 break;
                     case KeyEvent.VK_DOWN:      d = Direction.DOWN;
                                                 break;
-                    case KeyEvent.VK_ESCAPE:    game.loadNewGame(game.getLevel().getGameID());
                 }
 
                 board.repaint();
                 repaint();
                 if (d != null && game.step(d)) {
+                    if (game.getLevel().isGameOver()) {
+                        // ide kell majd a beirni a nevet az adatbazishoz
+                        JOptionPane.showMessageDialog(GameWindow.this,
+                                "Vesztettel! A legnagyobb teljesitett szint: " +
+                                game.getLevel(),
+                                "Vesztettel!",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+
                     if (!game.getLevel().endOfTheGame() && game.getLevel().isFulfilled()) {
                         JOptionPane.showMessageDialog(GameWindow.this,
                                 "Gratulalok, kijutottal a labirintusbol!",
@@ -149,7 +158,7 @@ public class GameWindow extends JFrame {
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                System.out.println("Utana x: " + game.getLevel().getPlayerPosition().x + " , utana y: " + game.getLevel().getPlayerPosition().y);
+
             }
         });
 
