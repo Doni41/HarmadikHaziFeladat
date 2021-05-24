@@ -26,6 +26,8 @@ public class Board extends JPanel {
     private int scaledSize;
     private final int titleSize = 32;
     private Timer timer;
+    private ActionListener ghostActionListener;
+    private ActionEvent actionEvent;
 
 
     public Board(Game g) throws IOException {
@@ -53,6 +55,7 @@ public class Board extends JPanel {
         }
         Dimension dimension = new Dimension(game.getLevel().getColumns() * scaledSize
                 , game.getLevel().getRows() * scaledSize);
+        setMinimumSize(dimension);
         setPreferredSize(dimension);
         setMaximumSize(dimension);
         setSize(dimension);
@@ -62,7 +65,7 @@ public class Board extends JPanel {
 
     public void moveGhostEvent () {
         Direction dir = game.createDirection();
-        ActionListener ghostActionListener = new ActionListener() {
+        ghostActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!game.getLevel().isGameOver()) {
@@ -73,7 +76,6 @@ public class Board extends JPanel {
                     } else {
                         game.getLevel().ghostChangeDirection(dir);
                     }
-                    System.out.println("Ghost x: " + game.getLevel().getGhostPosition().x + " , y: " + game.getLevel().getGhostPosition().y);
                     refresh();
                 } else {
                     ((Timer)actionEvent.getSource()).stop();
@@ -82,10 +84,6 @@ public class Board extends JPanel {
         };
         timer = new Timer(1000, ghostActionListener);
         timer.start();
-    }
-
-    public void stopTimer (ActionEvent actionEvent, Timer timer, ActionListener ghostActionListener) {
-
     }
 
     @Override
@@ -119,5 +117,21 @@ public class Board extends JPanel {
                 gr.drawImage(image, x * scaledSize, y * scaledSize, scaledSize, scaledSize, null);
             }
         }
+    }
+
+    public void gameOver() {
+        JOptionPane.showMessageDialog(this.getParent(),
+                "Vesztettel! A legnagyobb teljesitett szint: " +
+                        game.getLevel().getLevelNumber(),
+                "Vesztettel!",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public ActionListener getGhostActionListener() {
+        return ghostActionListener;
     }
 }

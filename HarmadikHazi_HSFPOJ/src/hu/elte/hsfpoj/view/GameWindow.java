@@ -43,15 +43,7 @@ public class GameWindow extends JFrame {
 
     private void initGame() {
         setTitle("Labyrinth");
-        //frame = new JFrame("Labyrinth");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame.setSize(600, 600);
-
-        try {
-            add(board = new Board(game));
-        } catch (IOException e) {
-            System.out.println("Hiba a jatek letrehozasa kozben!");
-        }
 
         timeLabel = new JLabel();
         timeLabel.setText("0 ms");
@@ -66,19 +58,6 @@ public class GameWindow extends JFrame {
             }
         });
         results = new JMenu();
-
-        GroupLayout boardLayout = new GroupLayout(board);
-        //getContentPane().setLayout(boardLayout);
-        board.setLayout(boardLayout);
-        boardLayout.setHorizontalGroup(
-                boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 398, Short.MAX_VALUE)
-        );
-        boardLayout.setVerticalGroup(
-                boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 330, Short.MAX_VALUE)
-        );
-
 
         menu.setText("Menu");
         newGame.setText("New Game");
@@ -97,6 +76,66 @@ public class GameWindow extends JFrame {
         menuBar.add(results);
 
         setJMenuBar(menuBar);
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (!game.isLevelAlreadyLoaded()) {
+                    return;
+                }
+                int keyCode = e.getKeyCode();
+                Direction d = null;
+                switch (keyCode) {
+                    case KeyEvent.VK_LEFT:      d = Direction.LEFT;
+                        break;
+                    case KeyEvent.VK_RIGHT:     d = Direction.RIGHT;
+                        break;
+                    case KeyEvent.VK_UP:        d = Direction.UP;
+                        break;
+                    case KeyEvent.VK_DOWN:      d = Direction.DOWN;
+                        break;
+                }
+
+                board.repaint();
+                if (d != null && game.step(d)) {
+                    if (game.getLevel().isGameOver()) {
+                        // ide kell majd a beirni a nevet az adatbazishoz
+                        board.gameOver();
+                    }
+                    if (game.getLevel().isFulfilled()) {
+                        gameWinning();
+                    }
+
+                    if (!game.getLevel().endOfTheGame() && game.getLevel().isFulfilled()) {
+                        JOptionPane.showMessageDialog(GameWindow.this,
+                                "Gratulalok, kijutottal a labirintusbol!",
+                                "Nyertel!",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+
+            }
+        });
+
+
+        try {
+            add(board = new Board(game));
+        } catch (IOException e) {
+            System.out.println("Hiba a jatek letrehozasa kozben!");
+        }
+
+        GroupLayout boardLayout = new GroupLayout(board);
+        board.setLayout(boardLayout);
+        boardLayout.setHorizontalGroup(
+                boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 398, Short.MAX_VALUE)
+        );
+        boardLayout.setVerticalGroup(
+                boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 330, Short.MAX_VALUE)
+        );
+
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,60 +157,107 @@ public class GameWindow extends JFrame {
                                 .addGap(25, 25, 25))
         );
 
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                if (!game.isLevelAlreadyLoaded()) {
-                    return;
-                }
-                System.out.println("Elote x: " + game.getLevel().getPlayerPosition().x + " , elotte y: " + game.getLevel().getPlayerPosition().y);
-                int keyCode = e.getKeyCode();
-                Direction d = null;
-                switch (keyCode) {
-                    case KeyEvent.VK_LEFT:      d = Direction.LEFT;
-                                                break;
-                    case KeyEvent.VK_RIGHT:     d = Direction.RIGHT;
-                                                break;
-                    case KeyEvent.VK_UP:        d = Direction.UP;
-                                                break;
-                    case KeyEvent.VK_DOWN:      d = Direction.DOWN;
-                                                break;
-                }
+        //setResizable(false);
+        setLocationRelativeTo(null);
+        game.loadNewGame(new GameIdentifier("EASY", 1));
+        board.refresh();
 
-                board.repaint();
-                repaint();
-                if (d != null && game.step(d)) {
-                    if (game.getLevel().isGameOver()) {
-                        // ide kell majd a beirni a nevet az adatbazishoz
-                        JOptionPane.showMessageDialog(GameWindow.this,
-                                "Vesztettel! A legnagyobb teljesitett szint: " +
-                                game.getLevel(),
-                                "Vesztettel!",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
 
-                    if (!game.getLevel().endOfTheGame() && game.getLevel().isFulfilled()) {
-                        JOptionPane.showMessageDialog(GameWindow.this,
-                                "Gratulalok, kijutottal a labirintusbol!",
-                                "Nyertel!",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }
+        pack();
+        setVisible(true);
+    }
 
+    public void gameWinning () {
+        GameIdentifier currentGameID = game.getLevel().getGameID();
+        String currentDiff = currentGameID.getDifficulty();
+        int currentLvl = currentGameID.getLevel();
+        if (currentDiff.equals("EASY")) {
+            if (currentLvl < 3) {
+                game.loadNewGame(new GameIdentifier("EASY", currentLvl + 1));
+            } else if (currentLvl == 3) {
+                game.loadNewGame(new GameIdentifier("EASY", 4));
+            } else {
+                game.loadNewGame(new GameIdentifier("MEDIUM", 5));
             }
-        });
+        } else if (currentDiff.equals("MEDIUM")) {
+            if (currentLvl < 7) {
+                game.loadNewGame(new GameIdentifier("MEDIUM", currentLvl + 1));
+            } else if (currentLvl == 7) {
+                game.loadNewGame(new GameIdentifier("MEDIUM", 8));
+            } else {
+                game.loadNewGame(new GameIdentifier("HARD", 9));
+            }
+        } else {
+            if (currentLvl == 9) {
+                game.loadNewGame(new GameIdentifier("HARD", currentLvl + 1));
+            } else if (currentLvl == 10) {
+                System.out.println("Vegig vitted a jatekot!");
+            }
+        }
+        board.refresh();
+        board.repaint();
+        setResizable(false);
+        setLocationRelativeTo(null);
+        pack();
+
+    }
+
+    public void startGame() {
+        if (board != null) {
+            remove(board);
+            if (board.getTimer() != null && board.getGhostActionListener() != null) {
+                board.getTimer().removeActionListener(board.getGhostActionListener());
+                board.getTimer().stop();
+            }
+            board.removeAll();
+            board = null;
+        }
+
+
+        try {
+            add(board = new Board(game));
+        } catch (IOException e) {
+            System.out.println("Hiba a jatek letrehozasa kozben!");
+        }
+
+        GroupLayout boardLayout = new GroupLayout(board);
+        //getContentPane().setLayout(boardLayout);
+        board.setLayout(boardLayout);
+        boardLayout.setHorizontalGroup(
+                boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 398, Short.MAX_VALUE)
+        );
+        boardLayout.setVerticalGroup(
+                boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 330, Short.MAX_VALUE)
+        );
+
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(board, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(timeLabel)
+                                .addContainerGap(381, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(board, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(timeLabel)
+                                .addGap(25, 25, 25))
+        );
 
         setResizable(false);
         setLocationRelativeTo(null);
         game.loadNewGame(new GameIdentifier("EASY", 1));
         board.refresh();
 
-        pack();
-        setVisible(true);
-    }
-
-    public void startGame() {
         timeLabel.setText("0 ms");
         startTime = System.currentTimeMillis();
 

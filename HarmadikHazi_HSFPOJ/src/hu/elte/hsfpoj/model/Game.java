@@ -25,6 +25,7 @@ public class Game {
 
     public void loadNewGame(GameIdentifier gameID) {
         Direction direction = createDirection();
+        level = null;
         level = new Level(levels.get(gameID.getDifficulty()).get(gameID.getLevel()), direction);
     }
 

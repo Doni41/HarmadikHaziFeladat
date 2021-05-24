@@ -63,6 +63,7 @@ public class Level {
     }
 
     public Level(Level lvl, Direction direction) {
+        this.gameID = lvl.getGameID();
         this.fulfilled = lvl.isFulfilled();
         this.levelNumber = lvl.getLevelNumber();
         this.rows = lvl.getRows();
@@ -120,62 +121,56 @@ public class Level {
     }
 
     public boolean endOfTheGame () {
-        if (!gameOver) {
-            Position playerLeft = new Position(player.x - 1, player.y);
-            Position playerRight = new Position(player.x + 1, player.y);
-            Position playerDown = new Position(player.x, player.y + 1);
-            Position playerUp = new Position(player.x, player.y - 1);
-            Position ghostCurrent = ghost;
 
-            if (ghostCurrent == playerLeft
-                    || ghostCurrent == playerRight
-                    || ghostCurrent == playerDown
-                    || ghostCurrent == playerUp) {
-                gameOver = true;
-                return true;
+        Position playerLeft = new Position(player.x - 1, player.y);
+        Position playerRight = new Position(player.x + 1, player.y);
+        Position playerDown = new Position(player.x, player.y + 1);
+        Position playerUp = new Position(player.x, player.y - 1);
+        Position ghostCurrent = ghost;
 
-            }
+        if (ghostCurrent.equals(playerLeft)
+                || ghostCurrent.equals(playerRight)
+                || ghostCurrent.equals(playerDown)
+                || ghostCurrent.equals(playerUp)) {
+            return true;
+
         }
 
         return false;
     }
 
     public void ghostChangeDirection (Direction d) {
-        if (!gameOver) {
-            Position current = ghost;
-            Position next = current.translate(d);
-            if (isValidPosition(next) && ifFreeForGhost(next)) {
-                ghost = next;
-                level[current.y][current.x] = Item.EMPTY;
-                level[next.y][next.x] = Item.GHOST;
-                ghostDirection = d;
-            } else {
-                int min = 1;
-                int max = 4;
-                Random random = new Random();
-                int rnd = -1;
-
-                Direction direction = d;
-                while (!(isValidPosition(current.translate(direction)) && ifFreeForGhost(current.translate(direction)))) {
-                    rnd = random.nextInt(max - min + 1) + min;
-                    if (rnd == 1) {
-                        direction = Direction.LEFT;
-                    } else if (rnd == 2) {
-                        direction = Direction.UP;
-                    } else if (rnd == 3) {
-                        direction = Direction.RIGHT;
-                    } else if (rnd == 4) {
-                        direction = Direction.DOWN;
-                    }
-                }
-
-                ghost = current.translate(direction);
-                level[current.y][current.x] = Item.EMPTY;
-                level[ghost.y][ghost.x] = Item.GHOST;
-                ghostDirection = direction;
-            }
+        Position current = ghost;
+        Position next = current.translate(d);
+        if (isValidPosition(next) && ifFreeForGhost(next)) {
+            ghost = next;
+            level[current.y][current.x] = Item.EMPTY;
+            level[next.y][next.x] = Item.GHOST;
+            ghostDirection = d;
         } else {
-            return;
+            int min = 1;
+            int max = 4;
+            Random random = new Random();
+            int rnd = -1;
+
+            Direction direction = d;
+            while (!(isValidPosition(current.translate(direction)) && ifFreeForGhost(current.translate(direction)))) {
+                rnd = random.nextInt(max - min + 1) + min;
+                if (rnd == 1) {
+                    direction = Direction.LEFT;
+                } else if (rnd == 2) {
+                    direction = Direction.UP;
+                } else if (rnd == 3) {
+                    direction = Direction.RIGHT;
+                } else if (rnd == 4) {
+                    direction = Direction.DOWN;
+                }
+            }
+
+            ghost = current.translate(direction);
+            level[current.y][current.x] = Item.EMPTY;
+            level[ghost.y][ghost.x] = Item.GHOST;
+            ghostDirection = direction;
         }
     }
 
@@ -223,6 +218,10 @@ public class Level {
     }
 
     public boolean isGameOver() {
-        return gameOver;
+        if (endOfTheGame()) {
+            return true;
+        }
+
+        return false;
     }
 }
