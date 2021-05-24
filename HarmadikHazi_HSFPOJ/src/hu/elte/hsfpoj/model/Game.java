@@ -137,4 +137,69 @@ public class Game {
         }
     }
 
+    public boolean isNearPlayer (Position p) {
+        Position playerCurrent = level.getPlayerPosition();
+        if (
+                p.x > playerCurrent.x
+                && (p.x - playerCurrent.x) <= 3
+                && p.y > playerCurrent.y
+                && (p.y - playerCurrent.y) <=3
+        ) {
+            return true;
+        } else if (
+                p.x < playerCurrent.x
+                && (playerCurrent.x - p.x) <= 3
+                && p.y > playerCurrent.y
+                && (p.y - playerCurrent.y) <=3
+        ) {
+            return true;
+        } else if (
+                p.x < playerCurrent.x
+                && (playerCurrent.x - p.x) <= 3
+                && p.y < playerCurrent.y
+                && (playerCurrent.y - p.y) <=3
+        ) {
+            return true;
+        } else if (
+                p.x > playerCurrent.x
+                && (p.x - playerCurrent.x) <= 3
+                && p.y < playerCurrent.y
+                && (playerCurrent.y - p.y) <=3
+        ) {
+            return true;
+        } else if (
+                p.x == playerCurrent.x
+                && p.y < playerCurrent.y
+                && (playerCurrent.y - p.y) <=3
+        ) {
+            return true;
+        } else if (
+                p.x == playerCurrent.x
+                && p.y > playerCurrent.y
+                && (p.y - playerCurrent.y) <=3
+        ) {
+            return true;
+        } else if (
+                p.x > playerCurrent.x
+                && (p.x - playerCurrent.x) <= 3
+                && p.y == playerCurrent.y
+        ) {
+            return true;
+        } else if (
+                p.x < playerCurrent.x
+                && (playerCurrent.x - p.x) <= 3
+                && p.y == playerCurrent.y
+        ) {
+            return true;
+        } else  if (
+                p.x == playerCurrent.x
+                && p.y == playerCurrent.y
+        ) {
+            return true;
+        }
+
+
+        return false;
+    }
+
 }

@@ -199,7 +199,6 @@ public class GameWindow extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         pack();
-
     }
 
     public void startGame() {

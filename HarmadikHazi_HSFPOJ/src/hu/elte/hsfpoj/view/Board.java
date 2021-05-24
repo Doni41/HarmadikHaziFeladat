@@ -99,22 +99,28 @@ public class Board extends JPanel {
             for (int x = 0; x < width; ++x) {
                 Image image = null;
                 Item item = game.getLevel().getLevelItem(y, x);
-                switch (item) {
-                    case DESTINATION:   image = destination;
-                                        break;
-                    case EMPTY:         image = empty;
-                                        break;
-                    case GHOST:         image = ghost;
-                                        break;
-                    case PLAYER:        image = player;
-                                        break;
-                    case WALL:          image = wall;
-                                        break;
+                if (game.isNearPlayer(new Position(x,y))) {
+                    switch (item) {
+                        case DESTINATION:   image = destination;
+                            break;
+                        case EMPTY:         image = empty;
+                            break;
+                        case GHOST:         image = ghost;
+                            break;
+                        case PLAYER:        image = player;
+                            break;
+                        case WALL:          image = wall;
+                            break;
+                    }
+                    if (image == null) {
+                        continue;
+                    }
+                    gr.drawImage(image, x * scaledSize, y * scaledSize, scaledSize, scaledSize, null);
+                } else {
+                    image = dark;
+                    gr.drawImage(image, x * scaledSize, y * scaledSize, scaledSize, scaledSize, null);
                 }
-                if (image == null) {
-                    continue;
-                }
-                gr.drawImage(image, x * scaledSize, y * scaledSize, scaledSize, scaledSize, null);
+
             }
         }
     }
