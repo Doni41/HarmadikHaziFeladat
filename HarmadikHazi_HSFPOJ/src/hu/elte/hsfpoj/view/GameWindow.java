@@ -33,6 +33,11 @@ public class GameWindow extends JFrame {
 
     public GameWindow() throws IOException {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("" + e);
+        }
+        try {
             ResultManager resultManager = new ResultManager(10);
         } catch (SQLException sqle) {
             sqle.printStackTrace();

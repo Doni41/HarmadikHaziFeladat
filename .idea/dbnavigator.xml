@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -27,19 +27,15 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="2c9bb5c3-42d1-47e6-9374-2649c0770d32">
-      <console name="ProgtechHaziDB" type="STANDARD" schema="ProgtechHazi" session="Main"><![CDATA[CREATE DATABASE progtechhazi;
-CREATE TABLE 'person' (
-    'id' int(11) PRIMARY KEY NOT NULL AUTO_ICREMENT,
-    'name' varchar(100) NOT NULL
-);]]></console>
+    <connection id="fa429747-680a-48f8-8ca6-1cc319b91bd4">
+      <console name="ProbaSQL" type="STANDARD" schema="" session="Main"><![CDATA[show databases;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="2c9bb5c3-42d1-47e6-9374-2649c0770d32" />
+    <connection id="fa429747-680a-48f8-8ca6-1cc319b91bd4" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -69,20 +65,20 @@ CREATE TABLE 'person' (
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="2c9bb5c3-42d1-47e6-9374-2649c0770d32" active="true">
+      <connection id="fa429747-680a-48f8-8ca6-1cc319b91bd4" active="true">
         <database>
-          <name value="ProgtechHaziDB" />
+          <name value="ProbaSQL" />
           <description value="" />
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
-          <database-version value="8.0" />
-          <driver-source value="BUILTIN" />
-          <driver-library value="" />
-          <driver value="" />
+          <database-version value="9999.0" />
+          <driver-source value="EXTERNAL" />
+          <driver-library value="$USER_HOME$/Downloads/mysql-connector-java-8.0.22/mysql-connector-java-8.0.22.jar" />
+          <driver value="com.mysql.jdbc.Driver" />
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="3306" />
-          <database value="mysql" />
+          <database value="progtech" />
           <type value="USER_PASSWORD" />
           <user value="root" />
           <deprecated-pwd value="YWRtaW5yb290" />
