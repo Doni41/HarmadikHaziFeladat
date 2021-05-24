@@ -278,7 +278,11 @@ public class GameWindow extends JFrame {
         ActionListener timerAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                timeLabel.setText(elapsedTime() + " ms");
+                if (!game.getLevel().endOfTheGame()) {
+                    timeLabel.setText(elapsedTime() + " ms");
+                } else {
+                    ((Timer)actionEvent.getSource()).stop();
+                }
             }
         };
         if (timer != null) {
@@ -294,7 +298,6 @@ public class GameWindow extends JFrame {
                 if (game.getLevel().endOfTheGame()) {
                     afterGameEnded();
                     ((Timer)actionEvent.getSource()).stop();
-                    board.getTimer().stop();
                 }
             }
         });
