@@ -107,8 +107,6 @@ public class Game {
         }
     }
 
-
-
     public void readLevels() {
         InputStream is;
         is = ResLoader.loadResource("/hu/elte/hsfpoj/res/levels.txt");

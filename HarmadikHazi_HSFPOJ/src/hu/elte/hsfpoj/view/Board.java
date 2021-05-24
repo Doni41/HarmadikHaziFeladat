@@ -1,5 +1,6 @@
 package hu.elte.hsfpoj.view;
 
+import hu.elte.hsfpoj.model.Direction;
 import hu.elte.hsfpoj.model.Game;
 import hu.elte.hsfpoj.model.Item;
 import hu.elte.hsfpoj.model.Position;
@@ -7,6 +8,8 @@ import hu.elte.hsfpoj.res.ResLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Board extends JPanel {
@@ -33,7 +36,7 @@ public class Board extends JPanel {
         player = ResLoader.loadImage("/hu/elte/hsfpoj/res/player.png");
         wall = ResLoader.loadImage("/hu/elte/hsfpoj/res/wall.png");
 
-        scale = 1.0;
+        scale = 2.0;
         scaledSize = (int)(scale * titleSize);
     }
 
@@ -54,6 +57,19 @@ public class Board extends JPanel {
         setSize(dimension);
         repaint();
         return true;
+    }
+
+    public void moveGhostEvent () {
+        Direction dir = game.createDirection();
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                game.getLevel().ghostChangeDirection(dir);
+                System.out.println("Ghost x: " + game.getLevel().getGhostPosition().x + " , y: " + game.getLevel().getGhostPosition().y);
+                refresh();
+            }
+        });
+        timer.start();
     }
 
     @Override

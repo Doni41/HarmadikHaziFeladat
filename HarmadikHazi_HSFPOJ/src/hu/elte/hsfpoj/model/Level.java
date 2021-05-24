@@ -19,7 +19,7 @@ public class Level {
     public Level(ArrayList<String> levelRows, GameIdentifier gameID, Direction ghostDirection) {
         this.gameID = gameID;
         fulfilled = false;
-        levelNumber = gameID.getLevel(); // -> gameID-bol kell jonnie
+        levelNumber = gameID.getLevel();
         int c = 0;
         // reading columns number from the file
         for (String s : levelRows) {
@@ -49,7 +49,7 @@ public class Level {
                                 break;
                     case ' ':   level[i][j] = Item.EMPTY;
                                 break;
-                    default:    level[i][i] = Item.EMPTY;
+                    default:    level[i][j] = Item.EMPTY;
                                 break;
                 }
             }
@@ -101,13 +101,14 @@ public class Level {
         Position next = current.translate(d);
         if (!isFulfilled() && isFreeToMove(next)) {
             player = next;
+            level[current.y][current.x] = Item.EMPTY;
+            level[next.y][next.x] = Item.PLAYER;
             return true;
         }
         return false;
     }
 
     public boolean endOfTheGame () {
-        Position playerCurrent = player;
         Position playerLeft = new Position(player.x - 1, player.y);
         Position playerRight = new Position(player.x + 1, player.y);
         Position playerDown = new Position(player.x, player.y + 1);
@@ -128,6 +129,8 @@ public class Level {
         Position next = current.translate(d);
         if (isValidPosition(next) && isFreeToMove(next)) {
             ghost = next;
+            level[current.y][current.x] = Item.EMPTY;
+            level[next.y][next.x] = Item.GHOST;
         } else {
             int min = 1;
             int max = 4;

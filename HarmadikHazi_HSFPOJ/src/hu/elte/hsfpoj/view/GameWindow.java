@@ -30,9 +30,9 @@ public class GameWindow extends JFrame {
     private Timer timer;
 
     public GameWindow() throws IOException {
+        game = new Game();
         URL url = GameWindow.class.getResource("/hu/elte/hsfpoj/res/wall.png");
         setIconImage(Toolkit.getDefaultToolkit().getImage(url));
-        game = new Game();
         initGame();
 
     }
@@ -42,18 +42,20 @@ public class GameWindow extends JFrame {
     }
 
     private void initGame() {
-        frame = new JFrame("Labyrinth");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Labyrinth");
+        //frame = new JFrame("Labyrinth");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //frame.setSize(600, 600);
 
         try {
-            frame.add(board = new Board(game));
+            add(board = new Board(game));
         } catch (IOException e) {
             System.out.println("Hiba a jatek letrehozasa kozben!");
         }
 
-        separator = new JSeparator();
         timeLabel = new JLabel();
+        timeLabel.setText("0 ms");
+
         menuBar = new JMenuBar();
         menu = new JMenu();
         newGame = new JMenuItem();
@@ -65,22 +67,17 @@ public class GameWindow extends JFrame {
         });
         results = new JMenu();
 
-        //frame.setPreferredSize(new java.awt.Dimension(600, 600));
-
         GroupLayout boardLayout = new javax.swing.GroupLayout(board);
-        board.setLayout(boardLayout);
+        setLayout(boardLayout);
         boardLayout.setHorizontalGroup(
                 boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(separator, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(0, 398, Short.MAX_VALUE)
         );
         boardLayout.setVerticalGroup(
                 boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boardLayout.createSequentialGroup()
-                                .addGap(10, 299, Short.MAX_VALUE)
-                                .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 330, Short.MAX_VALUE)
         );
 
-        timeLabel.setText(" ");
 
         menu.setText("Menu");
         newGame.setText("New Game");
@@ -90,6 +87,7 @@ public class GameWindow extends JFrame {
                 startGame();
             }
         });
+
         exit.setText("Exit");
         results.setText("Results");
         menu.add(newGame);
@@ -97,34 +95,26 @@ public class GameWindow extends JFrame {
         menuBar.add(menu);
         menuBar.add(results);
 
-        frame.setJMenuBar(menuBar);
+        setJMenuBar(menuBar);
 
-        timer = new Timer(10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timeLabel.setText(elapsedTime() + " ms");
-            }
-        });
-        startTime = System.currentTimeMillis();
-
-        GroupLayout layout = new GroupLayout(frame.getContentPane());
-        frame.getContentPane().setLayout(layout);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(board, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
+                                .addGap(13, 13, 13)
                                 .addComponent(timeLabel)
-                                .addContainerGap(380, Short.MAX_VALUE))
+                                .addContainerGap(381, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(board, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(timeLabel)
-                                .addGap(11, 11, 11))
+                                .addGap(25, 25, 25))
         );
 
         addKeyListener(new KeyAdapter() {
@@ -134,20 +124,23 @@ public class GameWindow extends JFrame {
                 if (!game.isLevelAlreadyLoaded()) {
                     return;
                 }
+                System.out.println("Elote x: " + game.getLevel().getPlayerPosition().x + " , elotte y: " + game.getLevel().getPlayerPosition().y);
                 int keyCode = e.getKeyCode();
                 Direction d = null;
                 switch (keyCode) {
-                    case KeyEvent.VK_A:         d = Direction.LEFT;
+                    case KeyEvent.VK_LEFT:      d = Direction.LEFT;
                                                 break;
-                    case KeyEvent.VK_D:         d = Direction.RIGHT;
+                    case KeyEvent.VK_RIGHT:     d = Direction.RIGHT;
                                                 break;
-                    case KeyEvent.VK_W:         d = Direction.UP;
+                    case KeyEvent.VK_UP:        d = Direction.UP;
                                                 break;
-                    case KeyEvent.VK_S:         d = Direction.DOWN;
+                    case KeyEvent.VK_DOWN:      d = Direction.DOWN;
                                                 break;
                     case KeyEvent.VK_ESCAPE:    game.loadNewGame(game.getLevel().getGameID());
                 }
+
                 board.repaint();
+                repaint();
                 if (d != null && game.step(d)) {
                     if (!game.getLevel().endOfTheGame() && game.getLevel().isFulfilled()) {
                         JOptionPane.showMessageDialog(GameWindow.this,
@@ -156,6 +149,7 @@ public class GameWindow extends JFrame {
                                 JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
+                System.out.println("Utana x: " + game.getLevel().getPlayerPosition().x + " , utana y: " + game.getLevel().getPlayerPosition().y);
             }
         });
 
@@ -164,13 +158,25 @@ public class GameWindow extends JFrame {
         game.loadNewGame(new GameIdentifier("EASY", 1));
         board.refresh();
 
-        //frame.add(board);
-
-        frame.pack();
-        frame.setVisible(true);
+        pack();
+        setVisible(true);
     }
 
     public void startGame() {
+        timeLabel.setText("0 ms");
+        startTime = System.currentTimeMillis();
+
+        ActionListener timerAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                timeLabel.setText(elapsedTime() + " ms");
+            }
+        };
+        if (timer != null) {
+            timer.removeActionListener(timerAction);
+        }
+        timer = new Timer(10, timerAction);
         timer.start();
+        board.moveGhostEvent();
     }
 }
