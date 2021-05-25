@@ -34,9 +34,9 @@ public class PositionTest {
         Position position2 = new Position(0,0);
 
         // WHEN
-        boolean isEquals = position1.equals(position2);
+        boolean areEquals = position1.equals(position2);
 
-        Assert.assertTrue(isEquals);
+        Assert.assertTrue(areEquals);
     }
 
     @Test
