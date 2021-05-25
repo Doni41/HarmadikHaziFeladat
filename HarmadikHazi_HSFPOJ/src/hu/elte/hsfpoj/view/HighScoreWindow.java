@@ -20,8 +20,8 @@ public class HighScoreWindow extends JDialog {
         TableRowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(table.getModel());
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.UNSORTED));
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.UNSORTED));
         sorter.setSortKeys(sortKeys);
         table.setRowSorter(sorter);
 
