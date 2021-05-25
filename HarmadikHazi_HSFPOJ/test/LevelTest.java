@@ -4,7 +4,6 @@ import org.junit.Test;
 
 public class LevelTest {
 
-
     Game game = new Game();
 
     @Test
