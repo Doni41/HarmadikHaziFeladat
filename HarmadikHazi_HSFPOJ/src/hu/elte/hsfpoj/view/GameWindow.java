@@ -116,17 +116,20 @@ public class GameWindow extends JFrame {
                 if (d != null && game.step(d) && !game.getLevel().isGameOver()) {
                     if (game.getLevel().isGameOver()) {
                         board.gameOver();
-                        afterGameEnded();
+                        int score = game.getLevel().getGameID().getLevel() - 1;
+                        afterGameEnded(score);
                     }
                     if (game.getLevel().isFulfilled()) {
                         gameWinning();
                         if (game.getLevel().getGameID().getLevel() == 10) {
-                            afterGameEnded();
+                            int score = game.getLevel().getGameID().getLevel();
+                            afterGameEnded(score);
                         }
                     }
 
                     if (!game.getLevel().endOfTheGame() && game.getLevel().isFulfilled()) {
-                        afterGameEnded();
+                        int score = game.getLevel().getGameID().getLevel() - 1;
+                        afterGameEnded(score);
                     }
                 }
 
@@ -298,7 +301,8 @@ public class GameWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (game.getLevel().endOfTheGame()) {
-                    afterGameEnded();
+                    int score = game.getLevel().getGameID().getLevel() - 1;
+                    afterGameEnded(score);
                     ((Timer)actionEvent.getSource()).stop();
                 }
             }
@@ -307,17 +311,21 @@ public class GameWindow extends JFrame {
 
     }
 
-    public void afterGameEnded () {
+    public void afterGameEnded (int score) {
+        StringBuilder message = new StringBuilder();
+        message
+                .append("Teljesitett szint: ")
+                .append(score)
+                .append(". Add meg a nevedet: ");
         String name = JOptionPane.showInputDialog(GameWindow.this,
-                "Add meg a nevedet: ",
+                (message),
                 "Vege a jateknak" ,
                 JOptionPane.INFORMATION_MESSAGE);
-        int level = game.getLevel().getGameID().getLevel();
         System.out.println("Name: " + name
-                + " , Teljesitett szint: " + level);
+                + " , Teljesitett szint: " + score);
 
         try {
-            game.getResultManager().putHighScore(name, level);
+            game.getResultManager().putHighScore(name, score);
         } catch (SQLException e) {
             e.printStackTrace();
         }
