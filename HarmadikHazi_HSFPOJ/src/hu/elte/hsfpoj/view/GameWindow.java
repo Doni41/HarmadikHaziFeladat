@@ -283,8 +283,9 @@ public class GameWindow extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!game.getLevel().endOfTheGame()) {
                     timeLabel.setText(elapsedTime() + " ms");
-                } else {
+                } else if (game.getLevel().isFulfilled() && game.getLevel().getGameID().getLevel() == 10) {
                     ((Timer)actionEvent.getSource()).stop();
+                    System.out.println("Leallhat az idozito!");
                 }
             }
         };
