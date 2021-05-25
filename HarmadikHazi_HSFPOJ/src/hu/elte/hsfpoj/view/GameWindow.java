@@ -3,7 +3,7 @@ package hu.elte.hsfpoj.view;
 import hu.elte.hsfpoj.model.Direction;
 import hu.elte.hsfpoj.model.Game;
 import hu.elte.hsfpoj.model.GameIdentifier;
-import hu.elte.hsfpoj.persistance.ResultManager;
+import hu.elte.hsfpoj.persistance.Result;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
 
@@ -31,21 +32,8 @@ public class GameWindow extends JFrame {
     private long startTime;
     private Timer timer;
 
-    private ResultManager resultManager;
-
     public GameWindow() throws IOException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("" + e);
-        }
-        try {
-            resultManager = new ResultManager(10);
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
         initGame();
-
     }
 
     public long elapsedTime() {
@@ -72,6 +60,21 @@ public class GameWindow extends JFrame {
             }
         });
         results = new JMenu();
+
+        JMenuItem resultTable = new JMenuItem(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    new HighScoreWindow((ArrayList<Result>) game.getResultManager().getSortedHighScores(), GameWindow.this);
+                } catch (SQLException sql) {
+                    System.out.println("Hiba a tablazat letrehozasa kozben!");
+                }
+            }
+        });
+
+        resultTable.setText("Eredmenyek lekerdezese");
+        results.add(resultTable);
+
 
         menu.setText("Menu");
         newGame.setText("New Game");
@@ -315,7 +318,7 @@ public class GameWindow extends JFrame {
                 + " , Teljesitett szint: " + level);
 
         try {
-            resultManager.putHighScore(name, level);
+            game.getResultManager().putHighScore(name, level);
         } catch (SQLException e) {
             e.printStackTrace();
         }

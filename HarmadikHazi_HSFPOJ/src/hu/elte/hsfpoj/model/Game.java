@@ -1,15 +1,28 @@
 package hu.elte.hsfpoj.model;
 
+import hu.elte.hsfpoj.persistance.ResultManager;
 import hu.elte.hsfpoj.res.ResLoader;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Game {
     private final HashMap<String, HashMap<Integer, Level>> levels;
     private Level level;
+    private ResultManager resultManager;
 
     public Game() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("" + e);
+        }
+        try {
+            resultManager = new ResultManager(10);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
         levels = new HashMap<>();
         level = null;
         readLevels();
@@ -46,6 +59,10 @@ public class Game {
             return null;
         }
         return levels.get(difficulty).keySet();
+    }
+
+    public ResultManager getResultManager() {
+        return resultManager;
     }
 
     public Direction createDirection() {
