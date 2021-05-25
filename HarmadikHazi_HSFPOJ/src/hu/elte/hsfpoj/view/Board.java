@@ -41,12 +41,6 @@ public class Board extends JPanel {
         scaledSize = (int)(scale * titleSize);
     }
 
-    public boolean setScale (double scale) {
-        this.scale = scale;
-        scaledSize = (int)(scale * titleSize);
-        return refresh();
-    }
-
     public boolean refresh () {
         if (!game.isLevelAlreadyLoaded()) {
             return false;

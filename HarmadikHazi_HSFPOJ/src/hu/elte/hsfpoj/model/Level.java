@@ -97,15 +97,6 @@ public class Level {
         return item == Item.EMPTY;
     }
 
-    public boolean isThereAGhost (Position p) {
-        if (!isValidPosition(p)) {
-            return false;
-        }
-        Item item = level[p.y][p.x];
-
-        return item == Item.GHOST;
-    }
-
     public boolean movePlayer (Direction d) {
         Position current = player;
         Position next = current.translate(d);
@@ -191,10 +182,6 @@ public class Level {
 
     public Item getLevelItem (int row, int column) {
         return level[row][column];
-    }
-
-    public Item[][] getLevel() {
-        return level;
     }
 
     public Position getPlayerPosition() {

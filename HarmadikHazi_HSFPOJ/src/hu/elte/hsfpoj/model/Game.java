@@ -50,17 +50,6 @@ public class Game {
         return level;
     }
 
-    public Collection<String> getDifficulties() {
-        return levels.keySet();
-    }
-
-    public  Collection<Integer> getLevelsOfDifficulty(String difficulty) {
-        if (!levels.containsKey(difficulty)) {
-            return null;
-        }
-        return levels.get(difficulty).keySet();
-    }
-
     public ResultManager getResultManager() {
         return resultManager;
     }
