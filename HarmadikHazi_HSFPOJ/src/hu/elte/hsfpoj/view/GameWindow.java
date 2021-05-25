@@ -75,7 +75,7 @@ public class GameWindow extends JFrame {
 
 
         menu.setText("Menu");
-        newGame.setText("New Game");
+        newGame.setText("Uj jatek");
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -83,8 +83,8 @@ public class GameWindow extends JFrame {
             }
         });
 
-        exit.setText("Exit");
-        results.setText("Results");
+        exit.setText("Kilepes");
+        results.setText("Eredmenyek");
         menu.add(newGame);
         menu.add(exit);
         menuBar.add(menu);
