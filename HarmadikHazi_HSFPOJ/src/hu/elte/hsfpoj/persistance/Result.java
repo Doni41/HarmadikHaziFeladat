@@ -1,4 +1,4 @@
-package hu.elte.hsfpoj.model;
+package hu.elte.hsfpoj.persistance;
 
 public class Result {
 

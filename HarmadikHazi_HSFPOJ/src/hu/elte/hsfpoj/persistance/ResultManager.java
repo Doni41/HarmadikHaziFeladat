@@ -1,4 +1,4 @@
-package hu.elte.hsfpoj.model;
+package hu.elte.hsfpoj.persistance;
 
 import java.sql.*;
 import java.util.ArrayList;

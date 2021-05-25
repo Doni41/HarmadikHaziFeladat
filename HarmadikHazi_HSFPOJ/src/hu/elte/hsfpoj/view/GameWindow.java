@@ -3,7 +3,7 @@ package hu.elte.hsfpoj.view;
 import hu.elte.hsfpoj.model.Direction;
 import hu.elte.hsfpoj.model.Game;
 import hu.elte.hsfpoj.model.GameIdentifier;
-import hu.elte.hsfpoj.model.ResultManager;
+import hu.elte.hsfpoj.persistance.ResultManager;
 
 import javax.swing.*;
 import java.awt.*;
