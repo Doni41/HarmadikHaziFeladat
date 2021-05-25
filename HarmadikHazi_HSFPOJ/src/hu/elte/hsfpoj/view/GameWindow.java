@@ -18,14 +18,12 @@ import java.util.ArrayList;
 
 public class GameWindow extends JFrame {
 
-    private JFrame frame;
     private Board board;
     private JMenuItem exit;
     private JMenu menu;
     private JMenuBar menuBar;
     private JMenuItem newGame;
     private JMenu results;
-    private JSeparator separator;
     private JLabel timeLabel;
 
     private Game game;

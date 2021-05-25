@@ -1,6 +1,5 @@
 package hu.elte.hsfpoj.model;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,7 +14,6 @@ public class Level {
     private Position player;
     private Position ghost;
     private Direction ghostDirection;
-    private Timer timer;
 
     public Level(ArrayList<String> levelRows, GameIdentifier gameID, Direction ghostDirection) {
         this.gameID = gameID;

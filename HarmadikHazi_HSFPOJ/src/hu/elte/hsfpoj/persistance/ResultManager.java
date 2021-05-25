@@ -9,7 +9,6 @@ import java.util.List;
 public class ResultManager {
 
     private final int maxScores;
-    public List<Result> results;
 
     private final PreparedStatement insertStatement;
     private final PreparedStatement deleteStatement;

@@ -27,8 +27,6 @@ public class Board extends JPanel {
     private final int titleSize = 32;
     private Timer timer;
     private ActionListener ghostActionListener;
-    private ActionEvent actionEvent;
-
 
     public Board(Game g) throws IOException {
         game = g;
