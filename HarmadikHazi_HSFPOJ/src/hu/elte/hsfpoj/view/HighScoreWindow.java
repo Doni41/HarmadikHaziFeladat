@@ -4,10 +4,7 @@ import hu.elte.hsfpoj.model.HighScoreTableModel;
 import hu.elte.hsfpoj.persistance.Result;
 
 import javax.swing.*;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HighScoreWindow extends JDialog {
     private final JTable table;
@@ -17,6 +14,8 @@ public class HighScoreWindow extends JDialog {
         table = new JTable(new HighScoreTableModel(resutls));
         table.setFillsViewportHeight(true);
 
+
+        /*
         TableRowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(table.getModel());
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
@@ -24,6 +23,7 @@ public class HighScoreWindow extends JDialog {
         sortKeys.add(new RowSorter.SortKey(0, SortOrder.UNSORTED));
         sorter.setSortKeys(sortKeys);
         table.setRowSorter(sorter);
+         */
 
         add(new JScrollPane(table));
         setSize(400, 400);
