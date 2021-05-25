@@ -55,10 +55,11 @@ public class GameTest {
 
         // WHEN
         game.loadNewGame(gameID);
-        boolean newDirection =  game.createDirection() == Direction.DOWN ||
-                                game.createDirection() == Direction.LEFT ||
-                                game.createDirection() == Direction.UP ||
-                                game.createDirection() == Direction.RIGHT;
+        Direction direction = game.createDirection();
+        boolean newDirection =  direction == Direction.DOWN ||
+                                direction == Direction.LEFT ||
+                                direction == Direction.UP ||
+                                direction == Direction.RIGHT;
 
         // THEN
         Assert.assertTrue(newDirection);
