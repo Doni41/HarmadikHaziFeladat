@@ -14,6 +14,11 @@ public class ResultManager {
     private final PreparedStatement deleteStatement;
     private final Connection connection;
 
+    /**
+     * creates a connection with the sql database
+     * @param maxScores
+     * @throws SQLException
+     */
     public ResultManager(int maxScores) throws SQLException {
         this.maxScores = maxScores;
 
@@ -27,6 +32,11 @@ public class ResultManager {
         deleteStatement = connection.prepareStatement(deleteQuery);
     }
 
+    /**
+     *
+     * @return a sorted ArrayList of the resutls
+     * @throws SQLException
+     */
     public List<Result> getSortedHighScores() throws SQLException {
         String query = "SELECT * FROM RESULTS";
         List<Result> highScores = new ArrayList<>();
@@ -44,6 +54,12 @@ public class ResultManager {
         return highScores;
     }
 
+    /**
+     * puts Position to the sql database
+     * @param name
+     * @param score
+     * @throws SQLException
+     */
     public void putHighScore(String name, int score) throws SQLException {
         List<Result> highScores = getSortedHighScores();
 
@@ -58,6 +74,10 @@ public class ResultManager {
         }
     }
 
+    /**
+     * sorting algorithm of the Result objects
+     * @param highScores
+     */
     public void sortHighScores(List<Result> highScores) {
         Collections.sort(highScores, Comparator.comparing(Result::getHighScore).reversed());
     }

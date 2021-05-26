@@ -30,6 +30,10 @@ public class GameWindow extends JFrame {
     private long startTime;
     private Timer timer;
 
+    /**
+     * creates a new GameWindow object
+     * @throws IOException
+     */
     public GameWindow() throws IOException {
         initGame();
     }
@@ -38,6 +42,9 @@ public class GameWindow extends JFrame {
         return System.currentTimeMillis() - startTime;
     }
 
+    /**
+     * inits a new GameWindow object
+     */
     private void initGame() {
         game = new Game();
         URL url = GameWindow.class.getResource("/hu/elte/hsfpoj/res/wall.png");
@@ -185,6 +192,9 @@ public class GameWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * checks wich is the next level of the game
+     */
     public void gameWinning () {
         GameIdentifier currentGameID = game.getLevel().getGameID();
         String currentDiff = currentGameID.getDifficulty();
@@ -311,6 +321,10 @@ public class GameWindow extends JFrame {
 
     }
 
+    /**
+     * create an InputDialog if the game is ended and refreshes the sql database
+     * @param score is the player's score
+     */
     public void afterGameEnded (int score) {
         StringBuilder message = new StringBuilder();
         message

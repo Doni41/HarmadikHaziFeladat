@@ -12,6 +12,10 @@ public class Game {
     private Level level;
     private ResultManager resultManager;
 
+    /**
+     * creates a new ResultManager object with sql connection, and a HashMap for levels than reads the levels from
+     * the levels.txt textfile
+     */
     public Game() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -28,14 +32,27 @@ public class Game {
         readLevels();
     }
 
+    /**
+     * checks is a level already loaded
+     * @return
+     */
     public boolean isLevelAlreadyLoaded () {
         return level != null;
     }
 
+    /**
+     * checks if a player can move to the diretion
+     * @param d is a direction parameter
+     * @return true if the player can move to the d direction
+     */
     public boolean step (Direction d) {
         return level.movePlayer(d);
     }
 
+    /**
+     * loads a new game
+     * @param gameID is a GameIdentifier
+     */
     public void loadNewGame(GameIdentifier gameID) {
         Direction direction = createDirection();
         level = null;
@@ -54,6 +71,10 @@ public class Game {
         return resultManager;
     }
 
+    /**
+     * creates a random number between 1 and 4 and
+     * @return a new Direcion object
+     */
     public Direction createDirection() {
         int min = 1;
         int max = 4;
@@ -73,6 +94,11 @@ public class Game {
         return direction;
     }
 
+    /**
+     * reads the next line of the levels.txt file
+     * @param sc
+     * @return
+     */
     public String readNextLine(Scanner sc) {
         String line = "";
         while(sc.hasNextLine() && line.trim().isEmpty()) {
@@ -81,6 +107,11 @@ public class Game {
         return line;
     }
 
+    /**
+     * reads a new GameIdentifier from levels.txt
+     * @param line
+     * @return a new GameIdentifier object
+     */
     public GameIdentifier readGameID(String line) {
         line = line.trim();
         if (line.isEmpty() || line.charAt(0) != ';') {
@@ -102,6 +133,10 @@ public class Game {
         return new GameIdentifier(difficulty, id);
     }
 
+    /**
+     * adds game levels to the HashMap
+     * @param level
+     */
     public void addNewGameLevel (Level level) {
         HashMap<Integer, Level> levelOfDiff;
         if (levels.containsKey(level.getGameID().getDifficulty())) {
@@ -114,6 +149,9 @@ public class Game {
         }
     }
 
+    /**
+     * reads a new level from levels.txt file
+     */
     public void readLevels() {
         InputStream is;
         is = ResLoader.loadResource("/hu/elte/hsfpoj/res/levels.txt");
@@ -143,6 +181,11 @@ public class Game {
         }
     }
 
+    /**
+     * checks that an Item is in the 3 radius area of the player
+     * @param p is a position
+     * @return true if the item is in the 3 radius area
+     */
     public boolean isNearPlayer (Position p) {
         Position playerCurrent = level.getPlayerPosition();
         if (

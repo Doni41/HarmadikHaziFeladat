@@ -28,6 +28,11 @@ public class Board extends JPanel {
     private Timer timer;
     private ActionListener ghostActionListener;
 
+    /**
+     * creates a new Board object with the images
+     * @param g
+     * @throws IOException
+     */
     public Board(Game g) throws IOException {
         game = g;
         dark = ResLoader.loadImage("/hu/elte/hsfpoj/res/dark.png");
@@ -41,6 +46,10 @@ public class Board extends JPanel {
         scaledSize = (int)(scale * titleSize);
     }
 
+    /**
+     * refreshes the board
+     * @return
+     */
     public boolean refresh () {
         if (!game.isLevelAlreadyLoaded()) {
             return false;
@@ -55,6 +64,9 @@ public class Board extends JPanel {
         return true;
     }
 
+    /**
+     * this function moves the ghost in every half second
+     */
     public void moveGhostEvent () {
         Direction dir = game.createDirection();
         ghostActionListener = new ActionListener() {
@@ -79,6 +91,10 @@ public class Board extends JPanel {
         timer.start();
     }
 
+    /**
+     * draws the images to the board
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (!game.isLevelAlreadyLoaded()) {

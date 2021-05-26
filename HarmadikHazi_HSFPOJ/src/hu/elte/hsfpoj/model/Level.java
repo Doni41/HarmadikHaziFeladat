@@ -15,6 +15,12 @@ public class Level {
     private Position ghost;
     private Direction ghostDirection;
 
+    /**
+     * creates a new Level object
+     * @param levelRows
+     * @param gameID
+     * @param ghostDirection
+     */
     public Level(ArrayList<String> levelRows, GameIdentifier gameID, Direction ghostDirection) {
         this.gameID = gameID;
         fulfilled = false;
@@ -75,10 +81,20 @@ public class Level {
         }
     }
 
+    /**
+     * checks if a position is int the game area
+     * @param p a position
+     * @return
+     */
     public boolean isValidPosition(Position p) {
         return p.x >= 0 && p.y >= 0 && p.x < columns && p.y < rows;
     }
 
+    /**
+     * checks the next position of the player is EMPTY or the DESTINATION
+     * @param p is the next position
+     * @return
+     */
     public boolean isFreeToMove (Position p) {
         if (!isValidPosition(p)) {
             return false;
@@ -88,6 +104,11 @@ public class Level {
         return item == Item.EMPTY || item == Item.DESTINATION;
     }
 
+    /**
+     * checks the next position of the ghost is EMPTY
+     * @param p is the next position
+     * @return
+     */
     public boolean ifFreeForGhost (Position p) {
         if (!isValidPosition(p)) {
             return false;
@@ -97,6 +118,11 @@ public class Level {
         return item == Item.EMPTY;
     }
 
+    /**
+     * move the player to the next position
+     * @param d is the next direction
+     * @return
+     */
     public boolean movePlayer (Direction d) {
         Position current = player;
         Position next = current.translate(d);
@@ -109,6 +135,10 @@ public class Level {
         return false;
     }
 
+    /**
+     * checks the player's and ghost's position
+     * @return
+     */
     public boolean endOfTheGame () {
 
         Position playerLeft = new Position(player.x - 1, player.y);
@@ -129,6 +159,10 @@ public class Level {
         return false;
     }
 
+    /**
+     * create a new direction to the ghost if it's necessary
+     * @param d is the old direction
+     */
     public void ghostChangeDirection (Direction d) {
         Position current = ghost;
         Position next = current.translate(d);

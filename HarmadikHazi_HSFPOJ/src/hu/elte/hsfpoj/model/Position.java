@@ -10,6 +10,11 @@ public class Position {
         this.y = y;
     }
 
+    /**
+     * creates a new position with a direction
+     * @param d is the new direction
+     * @return
+     */
     public Position translate(Direction d){
         return new Position(x + d.x, y + d.y);
     }

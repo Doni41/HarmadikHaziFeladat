@@ -6,6 +6,11 @@ public class GameIdentifier {
     private final String difficulty;
     private final int level;
 
+    /**
+     * creates a new GameIdentifier object
+     * @param difficulty is a String parameter
+     * @param level is an integer
+     */
     public GameIdentifier(String difficulty, int level) {
         this.difficulty = difficulty;
         this.level = level;
