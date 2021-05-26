@@ -338,13 +338,13 @@ public class GameWindow extends JFrame {
         System.out.println("Name: " + name
                 + " , Teljesitett szint: " + score);
 
+        if (name.equals("")) {
+            name = "ures";
+        }
         try {
             game.getResultManager().putHighScore(name, score);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
     }
 }
